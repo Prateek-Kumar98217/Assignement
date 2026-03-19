@@ -1,9 +1,11 @@
+import os
+import joblib
 import pandas as pd
 import numpy as np
 from preprocess import preprocessor_textmeta
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import LabelEncoder
-from xgboost import XGBRegressor, XGBClassifier
+from xgboost import XGBClassifier
 
 # Load the data as dataframes
 print("Loading data...")
@@ -94,3 +96,10 @@ comparison_dftrain.to_csv(
 print(
     "Comparison for training data saved to predictions-textmeta/train_predictions_xgboost_clf.csv"
 )
+print("Saving the trained models...")
+os.makedirs("saved-models/xgboost_clf", exist_ok=True)
+joblib.dump(classification_pipeline, "saved-models/xgboost_clf/state.joblib")
+joblib.dump(
+    classification_pipeline_intensity, "saved-models/xgboost_clf/intensity.joblib"
+)
+print("Trained models saved.")

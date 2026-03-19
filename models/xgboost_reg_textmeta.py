@@ -1,3 +1,5 @@
+import os
+import joblib
 import pandas as pd
 import numpy as np
 from preprocess import preprocessor_textmeta
@@ -80,3 +82,8 @@ comparison_dftrain.to_csv(
 print(
     "Comparison for training data saved to predictions-textmeta/train_predictions_xgboost_reg.csv"
 )
+print("Saving the trained models...")
+os.makedirs("saved-models/xgboost_reg", exist_ok=True)
+joblib.dump(classification_pipeline, "saved-models/xgboost_reg/state.joblib")
+joblib.dump(regression_pipeline, "saved-models/xgboost_reg/intensity.joblib")
+print("Trained models saved.")
