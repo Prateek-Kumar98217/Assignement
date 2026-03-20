@@ -49,3 +49,11 @@ preprocessor_textmeta = ColumnTransformer(
 preprocessor_textonly = ColumnTransformer(
     transformers=[("text", text_transformer, text_features)], remainder="drop"
 )
+
+preprocessor_nontext = ColumnTransformer(
+    transformers=[
+        ("num", numerical_transformer, numerical_features),
+        ("cat", categorical_transformer, categorical_features),
+    ],
+    remainder="drop",
+)

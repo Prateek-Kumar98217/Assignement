@@ -1,0 +1,16 @@
+error_type,count
+Intensity_Wrong,321
+Intensity_Wrong & Uncertainty_Intensity,230
+State_Wrong & Intensity_Wrong,182
+State_Wrong & Intensity_Wrong & Uncertainty_Intensity,174
+State_Wrong & Intensity_Wrong & Uncertainty & Uncertainty_Intensity,112
+State_Wrong & Intensity_Wrong & Uncertainty,75
+Uncertainty_Intensity,54
+State_Wrong & Uncertainty_Intensity,38
+State_Wrong & Uncertainty & Uncertainty_Intensity,37
+State_Wrong,33
+Intensity_Wrong & Uncertainty & Uncertainty_Intensity,29
+State_Wrong & Uncertainty,27
+Intensity_Wrong & Uncertainty,21
+Uncertainty,14
+Uncertainty & Uncertainty_Intensity,2

@@ -1,0 +1,16 @@
+error_type,count
+Intensity_Only_Wrong,273
+Intensity_Only_Wrong | Uncertain_Intensity,271
+Cascade_Error (State & Intensity) | Uncertain_State | Uncertain_Intensity,183
+Cascade_Error (State & Intensity) | Uncertain_Intensity,142
+Uncertain_Intensity,87
+Cascade_Error (State & Intensity) | Uncertain_State,84
+Cascade_Error (State & Intensity),83
+Intensity_Only_Wrong | Uncertain_State | Uncertain_Intensity,47
+State_Only_Wrong | Uncertain_State | Uncertain_Intensity,45
+State_Only_Wrong | Uncertain_Intensity,40
+State_Only_Wrong | Uncertain_State,33
+Intensity_Only_Wrong | Uncertain_State,30
+State_Only_Wrong,21
+Uncertain_State | Uncertain_Intensity,13
+Uncertain_State,7
