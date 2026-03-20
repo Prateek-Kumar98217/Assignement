@@ -6,6 +6,7 @@ from preprocess import preprocessor_textmeta
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import LabelEncoder
 from xgboost import XGBRegressor, XGBClassifier
+from sklearn.model_selection import StratifiedKFold, KFold, cross_val_predict
 
 # Load the data as dataframes
 print("Loading data...")
@@ -42,29 +43,47 @@ regression_pipeline = Pipeline(
     steps=[("preprocessor", preprocessor_textmeta), ("regressor", regression_model)]
 )
 
-# Train the models
-print("Training the models...")
-classification_pipeline.fit(train_features, state_label_encoded)
-regression_pipeline.fit(train_features, intensity_label)
+skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+kf = KFold(n_splits=5, shuffle=True, random_state=42)
 
-# generate predictions
-print(
-    "Generating predictions for training data to see performance and check underfitting..."
+print("Generating Out-of-Fold (OOF) predictions via 5-Fold CV...")
+
+# 2. Generate OOF Class Predictions and Probabilities
+# predict_proba gives us the scores for the confidence/uncertainty logic
+state_predictions_encoded = cross_val_predict(
+    classification_pipeline,
+    train_features,
+    state_label_encoded,
+    cv=skf,
+    method="predict",
 )
-# state predictions are encoded, we will decode them back to original labels later for better interpretability
-state_predictions_encoded = classification_pipeline.predict(train_features)
+state_probs = cross_val_predict(
+    classification_pipeline,
+    train_features,
+    state_label_encoded,
+    cv=skf,
+    method="predict_proba",
+)
+
+# 3. Generate OOF Regression Predictions
+intensity_predictions = cross_val_predict(
+    regression_pipeline, train_features, intensity_label, cv=kf
+)
+
+# --- Process Results ---
+
+# Decode classification
 state_predictions = state_encoder.inverse_transform(state_predictions_encoded)
-state_probabilities = classification_pipeline.predict_proba(train_features)
-confidence_scores = np.max(state_probabilities, axis=1)
+confidence_scores = np.max(state_probs, axis=1)
 uncertainty_flag = confidence_scores < 0.5
-# intensity predictions are continuous values, thus we round them to the nearest integer and clip to the range of 1-5
-intensity_predictions = regression_pipeline.predict(train_features)
+
+# Round and clip regression
 intensity_predictions_rounded = np.clip(np.round(intensity_predictions), 1, 5).astype(
     int
 )
 
-# compare predictions with actual labels to see performance and check underfitting
-print("Comparing predictions with actual labels...")
+# 4. Save the Comparison (These are now "honest" predictions)
+print("Saving OOF predictions for comparison...")
 comparison_dftrain = pd.DataFrame(
     {
         "id": train_df["id"],
@@ -76,14 +95,18 @@ comparison_dftrain = pd.DataFrame(
         "uncertainty_flag": uncertainty_flag,
     }
 )
+os.makedirs("predictions-textmeta", exist_ok=True)
 comparison_dftrain.to_csv(
     "predictions-textmeta/train_predictions_xgboost_reg.csv", index=False
 )
-print(
-    "Comparison for training data saved to predictions-textmeta/train_predictions_xgboost_reg.csv"
-)
-print("Saving the trained models...")
+
+# 5. Final Fit and Save
+# We still do a final fit on the WHOLE dataset so the saved .joblib file is as "smart" as possible for the future
+print("Training final models on full data for export...")
+classification_pipeline.fit(train_features, state_label_encoded)
+regression_pipeline.fit(train_features, intensity_label)
+
 os.makedirs("saved-models/xgboost_reg", exist_ok=True)
 joblib.dump(classification_pipeline, "saved-models/xgboost_reg/state.joblib")
 joblib.dump(regression_pipeline, "saved-models/xgboost_reg/intensity.joblib")
-print("Trained models saved.")
+print("Process complete.")

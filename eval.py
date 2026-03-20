@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import confusion_matrix, classification_report
+import pandas as pd
 import os
 
 
@@ -96,5 +97,51 @@ def generate_eval_artifacts(df, model_name):
     print(
         f"Confusion matrix for intensity of {model_name} saved to {cm_intensity_path}"
     )
+
+    print(f"\nGenerating F1 Scores and Classification Reports for {model_name}...")
+
+    # 1. Emotional State Report
+    state_report_dict = classification_report(
+        eval_df["emotional_state"],
+        eval_df["predicted_emotional_state"],
+        labels=state_labels,
+        output_dict=True,
+        zero_division=0,
+    )
+    state_report_df = pd.DataFrame(state_report_dict).transpose()
+    state_report_path = f"artifacts/{model_name}/tables/classification_report_state.csv"
+    state_report_df.to_csv(state_report_path)
+
+    print(f"\n--- EMOTIONAL STATE METRICS ---")
+    print(
+        classification_report(
+            eval_df["emotional_state"],
+            eval_df["predicted_emotional_state"],
+            zero_division=0,
+        )
+    )
+
+    # 2. Intensity Report
+    intensity_report_dict = classification_report(
+        eval_df["intensity"],
+        eval_df["predicted_intensity"],
+        labels=intensity_labels,
+        output_dict=True,
+        zero_division=0,
+    )
+    intensity_report_df = pd.DataFrame(intensity_report_dict).transpose()
+    intensity_report_path = (
+        f"artifacts/{model_name}/tables/classification_report_intensity.csv"
+    )
+    intensity_report_df.to_csv(intensity_report_path)
+
+    print(f"\n--- INTENSITY METRICS ---")
+    print(
+        classification_report(
+            eval_df["intensity"], eval_df["predicted_intensity"], zero_division=0
+        )
+    )
+
+    print(f"Saved classification reports to artifacts/{model_name}/tables/")
 
     return error_counts
