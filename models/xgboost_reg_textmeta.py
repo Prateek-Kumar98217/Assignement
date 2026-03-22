@@ -95,9 +95,9 @@ comparison_dftrain = pd.DataFrame(
         "uncertainty_flag": uncertainty_flag,
     }
 )
-os.makedirs("predictions-textmeta", exist_ok=True)
+os.makedirs("predictions-test", exist_ok=True)
 comparison_dftrain.to_csv(
-    "predictions-textmeta/train_predictions_xgboost_reg.csv", index=False
+    "predictions-test/train_predictions_xgboost_reg.csv", index=False
 )
 
 # 5. Final Fit and Save

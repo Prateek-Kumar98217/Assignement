@@ -124,7 +124,7 @@ cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
 oof_state_probs = np.zeros((len(train_df), num_state_classes))
 oof_intensity_probs = np.zeros((len(train_df), num_int_classes))
 
-print("Starting 5-Fold CV for PyTorch MTL (Semantic MiniLM)...")
+print("Starting 5-Fold CV for PyTorch MLP (Semantic MiniLM)...")
 for fold, (train_idx, val_idx) in enumerate(
     cv.split(X_processed_full, state_labels_encoded)
 ):
@@ -165,7 +165,7 @@ uncertainty_flag_intensity = confidence_scores_intensity < 0.5
 
 # 9. Save the OOF predictions
 print("Saving PyTorch OOF predictions...")
-os.makedirs("predictions-textmeta", exist_ok=True)
+os.makedirs("predictions-test", exist_ok=True)
 comparison_dftrain = pd.DataFrame(
     {
         "id": train_df["id"],
@@ -180,7 +180,7 @@ comparison_dftrain = pd.DataFrame(
     }
 )
 comparison_dftrain.to_csv(
-    "predictions-textmeta/train_predictions_dl_transformer.csv", index=False
+    "predictions-test/train_predictions_dl_transformer.csv", index=False
 )
 
 # 10. Train Final Model
@@ -206,7 +206,7 @@ os.makedirs("saved-models/pytorch_transformer", exist_ok=True)
 torch.save(final_model.state_dict(), "saved-models/pytorch_transformer/model.pth")
 joblib.dump(
     preprocessor_nontext, "saved-models/pytorch_transformer/preprocessor_nontext.joblib"
-)  # Fixed to save the right preprocessor!
+)
 print(
     "Done! You can now run eval.py on predictions-textmeta/train_predictions_dl_transformer.csv"
 )

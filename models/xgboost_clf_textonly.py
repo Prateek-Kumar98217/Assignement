@@ -1,22 +1,21 @@
+from preprocess import preprocessor_textonly
 import os
 import joblib
 import pandas as pd
 import numpy as np
-from preprocess import preprocessor_textmeta
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import LabelEncoder
-from sklearn.model_selection import cross_val_predict, StratifiedKFold
+from sklearn.model_selection import cross_val_predict, StratifiedKFold 
 from xgboost import XGBClassifier
 
 # Load the data
 print("Loading data...")
 train_df = pd.read_csv("data/train.csv")
-test_df = pd.read_csv("data/test.csv")
 
 # Define labels and features
 state_label = train_df["emotional_state"]
 intensity_label = train_df["intensity"]
-train_features = train_df.drop(columns=["id", "emotional_state", "intensity"])
+train_features = train_df[["journal_text"]]
 
 # Encode labels
 state_encoder = LabelEncoder()
@@ -35,13 +34,13 @@ classification_model_intensity = XGBClassifier(
 # Create pipelines
 classification_pipeline = Pipeline(
     steps=[
-        ("preprocessor", preprocessor_textmeta),
+        ("preprocessor", preprocessor_textonly),
         ("classifier", classification_model),
     ]
 )
 classification_pipeline_intensity = Pipeline(
     steps=[
-        ("preprocessor", preprocessor_textmeta),
+        ("preprocessor", preprocessor_textonly),
         ("classifier", classification_model_intensity),
     ]
 )
@@ -109,7 +108,7 @@ comparison_dftrain = pd.DataFrame(
 
 os.makedirs("predictions-test", exist_ok=True)
 comparison_dftrain.to_csv(
-    "predictions-test/train_predictions_xgboost_clf.csv", index=False
+    "predictions-test/train_predictions_xgboost_clf_textonly.csv", index=False
 )
 
 # Final model training on full data
@@ -118,11 +117,11 @@ classification_pipeline.fit(train_features, state_label_encoded)
 classification_pipeline_intensity.fit(train_features, intensity_label_encoded)
 
 print("Saving the trained models...")
-os.makedirs("saved-models/xgboost_clf", exist_ok=True)
-joblib.dump(classification_pipeline, "saved-models/xgboost_clf/state.joblib")
+os.makedirs("saved-models/xgboost_clf_textonly", exist_ok=True)
+joblib.dump(classification_pipeline, "saved-models/xgboost_clf_textonly/state.joblib")
 joblib.dump(
-    classification_pipeline_intensity, "saved-models/xgboost_clf/intensity.joblib"
+    classification_pipeline_intensity, "saved-models/xgboost_clf_textonly/intensity.joblib"
 )
-joblib.dump(state_encoder, "saved-models/xgboost_clf/state_encoder.joblib")
-joblib.dump(intensity_encoder, "saved-models/xgboost_clf/intensity_encoder.joblib")
+joblib.dump(state_encoder, "saved-models/xgboost_clf_textonly/state_encoder.joblib")
+joblib.dump(intensity_encoder, "saved-models/xgboost_clf_textonly/intensity_encoder.joblib")
 print("Process complete.")

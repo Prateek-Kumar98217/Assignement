@@ -1,16 +1,16 @@
 error_type,count
-Intensity_Wrong,338
-Intensity_Wrong & Uncertainty_Intensity,218
-State_Wrong & Intensity_Wrong & Uncertainty_Intensity,148
-State_Wrong & Intensity_Wrong,147
-State_Wrong & Intensity_Wrong & Uncertainty & Uncertainty_Intensity,116
-State_Wrong & Intensity_Wrong & Uncertainty,98
-Uncertainty_Intensity,60
-State_Wrong & Uncertainty_Intensity,41
-State_Wrong,40
-Intensity_Wrong & Uncertainty,30
-State_Wrong & Uncertainty,29
-Intensity_Wrong & Uncertainty & Uncertainty_Intensity,27
-State_Wrong & Uncertainty & Uncertainty_Intensity,23
-Uncertainty & Uncertainty_Intensity,10
-Uncertainty,5
+Intensity_Wrong,418
+State_Wrong & Intensity_Wrong,185
+Intensity_Wrong & Uncertainty_Intensity,164
+State_Wrong & Intensity_Wrong & Uncertainty_Intensity,113
+State_Wrong & Intensity_Wrong & Uncertainty,102
+State_Wrong & Intensity_Wrong & Uncertainty & Uncertainty_Intensity,92
+State_Wrong,56
+Uncertainty_Intensity,37
+State_Wrong & Uncertainty_Intensity,36
+Intensity_Wrong & Uncertainty,31
+State_Wrong & Uncertainty,23
+Intensity_Wrong & Uncertainty & Uncertainty_Intensity,22
+State_Wrong & Uncertainty & Uncertainty_Intensity,18
+Uncertainty,14
+Uncertainty & Uncertainty_Intensity,4

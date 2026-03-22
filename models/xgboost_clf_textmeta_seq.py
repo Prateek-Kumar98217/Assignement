@@ -87,9 +87,9 @@ comparison_dftrain = pd.DataFrame(
         "confidence_score_intensity": confidence_scores_intensity,
     }
 )
-os.makedirs("predictions-textmeta", exist_ok=True)
+os.makedirs("predictions-test", exist_ok=True)
 comparison_dftrain.to_csv(
-    "predictions-textmeta/train_predictions_sequential_clf.csv", index=False
+    "predictions-test/train_predictions_sequential_clf.csv", index=False
 )
 
 # --- Final Production Training ---

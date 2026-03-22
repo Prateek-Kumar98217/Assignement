@@ -148,7 +148,7 @@ uncertainty_flag_intensity = confidence_scores_intensity < 0.5
 
 # 5. Save the OOF predictions
 print("Saving PyTorch OOF predictions...")
-os.makedirs("predictions-textmeta", exist_ok=True)
+os.makedirs("predictions-test", exist_ok=True)
 comparison_dftrain = pd.DataFrame(
     {
         "id": train_df["id"],
@@ -163,7 +163,7 @@ comparison_dftrain = pd.DataFrame(
     }
 )
 comparison_dftrain.to_csv(
-    "predictions-textmeta/train_predictions_dl_mlp.csv", index=False
+    "predictions-test/train_predictions_dl_mlp.csv", index=False
 )
 
 # Final model
