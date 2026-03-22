@@ -123,4 +123,6 @@ joblib.dump(classification_pipeline, "saved-models/xgboost_clf/state.joblib")
 joblib.dump(
     classification_pipeline_intensity, "saved-models/xgboost_clf/intensity.joblib"
 )
+joblib.dump(state_encoder, "saved-models/xgboost_clf/state_encoder.joblib")
+joblib.dump(intensity_encoder, "saved-models/xgboost_clf/intensity_encoder.joblib")
 print("Process complete.")

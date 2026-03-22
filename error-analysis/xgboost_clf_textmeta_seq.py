@@ -6,7 +6,7 @@ from eval import generate_eval_artifacts
 print("Loading data...")
 train_df = pd.read_csv("data/train.csv")
 # Note: Pointing to the new sequential CSV we generated in the previous step
-pred_df = pd.read_csv("predictions-textmeta/train_predictions_sequential_clf.csv")
+pred_df = pd.read_csv("predictions-test/train_predictions_sequential_clf.csv")
 
 # Merge and clean up
 analysis_df = pd.merge(train_df, pred_df, on="id", how="inner")

@@ -4,7 +4,7 @@ from eval import generate_eval_artifacts
 # Load the data as dataframes
 print("Loading data...")
 train_df = pd.read_csv("data/train.csv")
-pred_df = pd.read_csv("predictions-textmeta/train_predictions_dl_mlp.csv")
+pred_df = pd.read_csv("predictions-test/train_predictions_dl_transformer.csv")
 
 # Merge the actual and predicted dataframes on the 'id' column
 analysis_df = pd.merge(train_df, pred_df, on="id", how="inner")
@@ -32,5 +32,5 @@ def flag_error_type(row):
 
 analysis_df["error_type"] = analysis_df.apply(flag_error_type, axis=1)
 
-error_counts = generate_eval_artifacts(analysis_df, "deep_mlp_textmeta")
+error_counts = generate_eval_artifacts(analysis_df, "deep_transformer_textmeta")
 print(error_counts)

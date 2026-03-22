@@ -1,3 +1,5 @@
+"""A single function to tabulate and plot the evaluation metrics for a given model"""
+
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.metrics import confusion_matrix, classification_report
@@ -112,7 +114,7 @@ def generate_eval_artifacts(df, model_name):
     state_report_path = f"artifacts/{model_name}/tables/classification_report_state.csv"
     state_report_df.to_csv(state_report_path)
 
-    print(f"\n--- EMOTIONAL STATE METRICS ---")
+    print(f"\n[EMOTIONAL STATE METRICS]")
     print(
         classification_report(
             eval_df["emotional_state"],
@@ -135,7 +137,7 @@ def generate_eval_artifacts(df, model_name):
     )
     intensity_report_df.to_csv(intensity_report_path)
 
-    print(f"\n--- INTENSITY METRICS ---")
+    print(f"\n[INTENSITY METRICS]")
     print(
         classification_report(
             eval_df["intensity"], eval_df["predicted_intensity"], zero_division=0

@@ -31,18 +31,18 @@ class DualTargetMLP(nn.Module):
         self.shared_layer = nn.Sequential(
             nn.Linear(input_dim, 128),
             nn.BatchNorm1d(128),
-            nn.ReLU(),
+            nn.SiLU(),
             nn.Dropout(0.3),
             nn.Linear(128, 64),
             nn.BatchNorm1d(64),
-            nn.ReLU(),
+            nn.SiLU(),
             nn.Dropout(0.3),
         )
 
         self.state_head = nn.Linear(64, state_classes)
         self.intensity_head = nn.Sequential(
             nn.Linear(64 + state_classes, 32),
-            nn.ReLU(),
+            nn.SiLU(),
             nn.Linear(32, intensity_classes),
         )
 
@@ -103,7 +103,7 @@ cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
 oof_state_probs = np.zeros((len(train_df), num_state_classes))
 oof_intensity_probs = np.zeros((len(train_df), num_int_classes))
 
-print("Starting 5-Fold CV for PyTorch MTL...")
+print("Starting 5-Fold CV for PyTorch MLP...")
 for fold, (train_idx, val_idx) in enumerate(
     cv.split(X_processed_full, state_labels_encoded)
 ):

@@ -1,3 +1,5 @@
+"""A script to preprocess the data for the models"""
+
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
@@ -5,7 +7,6 @@ from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 # Definations of categorical, numerical and text features
-
 text_features = "journal_text"
 
 categorical_features = [
@@ -19,7 +20,6 @@ categorical_features = [
 numerical_features = ["duration_min", "sleep_hours", "energy_level", "stress_level"]
 
 # Feature Preprocessing
-
 text_transformer = TfidfVectorizer(stop_words="english", max_features=500)
 
 numerical_transformer = Pipeline(
@@ -34,9 +34,7 @@ categorical_transformer = Pipeline(
     ]
 )
 
-# final preprocessor
-# using remainder="drop" to drop columns not specified in the definition section(like id)
-
+# final preprocessors
 preprocessor_textmeta = ColumnTransformer(
     transformers=[
         ("text", text_transformer, text_features),
